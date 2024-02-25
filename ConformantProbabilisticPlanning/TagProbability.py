@@ -146,29 +146,20 @@ class TagProbability:
 
     def get_satisfied_tag_assert(self, satisfied_tags):
         items = set()
-        for tag_group_index in range(len(self.tag_generator.all_true_and_false_tags)):
-            satisfied_tag_group = satisfied_tags[tag_group_index]
-            all_tag_group = self.tag_generator.all_true_and_false_tags[tag_group_index]
+        for tag_group in satisfied_tags:
             satisfied_tag_items = set()
             not_satisfied_items = set()
-            if satisfied_tag_group is not None:
-                for tag in all_tag_group:
+            if tag_group is not None:
+                for tag in tag_group:
                     predicate_set = set()
-                    if tag in satisfied_tag_group:
-                        if tag in self.tag_generator.all_tags_in_one_list:
-                            for predicate in tag:
-                                predicate_set.add(self.constraint_object.to_smt(predicate, 0))
-                            satisfied_tag_items.add(And(predicate_set))
+                    if tag in self.tag_generator.all_tags_in_one_list:
+                        for predicate in tag:
+                            predicate_set.add(self.constraint_object.to_smt(predicate, 0))
+                        satisfied_tag_items.add(And(predicate_set))
                     else:
                         for predicate in tag:
                             predicate_set.add(self.constraint_object.to_smt(predicate.negate(), 0))
                         not_satisfied_items.add(Or(predicate_set))
-            else:
-                for tag in all_tag_group:
-                    predicate_set = set()
-                    for predicate in tag:
-                        predicate_set.add(self.constraint_object.to_smt(predicate.negate(), 0))
-                    not_satisfied_items.add(Or(predicate_set))
             items.add(Or(satisfied_tag_items))
             items.add(And(not_satisfied_items))
         return And(items)
