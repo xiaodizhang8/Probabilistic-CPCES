@@ -46,7 +46,7 @@ class HittingSet:
                 self.all_used_hitting_set.append(hitting_set)
                 self.hitman.block(hitting_set)
                 return hitting_set, self.all_used_hitting_set
-        elif hitting_set_type == 'ratio':
+        elif hitting_set_type == 'minimal':
             while self.has_hitting_set_left:
                 if len(self.sorted_hitting_set) == 0: # 当前长度的hitting set用完了，再寻找下一个长度的
                     self.current_hitting_set_length = None
