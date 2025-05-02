@@ -274,13 +274,23 @@ def conformant_probabilistic_planning(domain, instance, planner, search_engine=N
     # print('checking plan...')
     # PlanChecking(plan, domain, instance, type='conformant_probabilistic_planning')
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--domain', dest='domain')
     parser.add_argument('-i', '--instance', dest='instance')
     parser.add_argument('-p', '--planner', dest='planner', default='ff')
     parser.add_argument('-s', '--search_engine', dest='search_engine', default='eager(single(ff))')
-    parser.add_argument('-hs', '--hitting_set', dest='hitting_set', default=False)
+    parser.add_argument('-hs', '--hitting_set', dest='hitting_set', type=str2bool, default=False)
     parser.add_argument('-ht', '--hitting_type', dest='hitting_type', default='random')
     args = parser.parse_args()
     print(args.domain)
